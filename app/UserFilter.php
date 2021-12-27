@@ -15,8 +15,8 @@ class UserFilter extends QueryFilter
             'state' => 'in:active,inactive',
             'role' => 'in:user,admin',
             'skills' => 'array|exists:skills,id',
-            'from' => 'date_format:d/m/Y',
-            'to' => 'date_format:d/m/Y',
+            'from' => 'filled|date_format:d/m/Y',
+            'to' => 'filled|date_format:d/m/Y',
             'order' => 'in:first_name,email,created_at',
             'direction' => 'in:asc,desc',
             'trashed' => 'accepted'

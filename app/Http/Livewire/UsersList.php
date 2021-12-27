@@ -17,12 +17,16 @@ class UsersList extends Component
     public $state;
     public $role;
     public $skills = [];
+    public $from;
+    public $to;
 
     protected $queryString = [
         'search' => ['except' => ''],
         'state' => ['except' => 'all'],
         'role' => ['except' => 'all'],
         'skills' => [],
+        'from' => ['except' => 'all'],
+        'to' => ['except' => 'all'],
     ];
 
     public function mount($view, Request $request)
@@ -49,8 +53,8 @@ class UsersList extends Component
                  'role' => $this->role,
                  'search' => $this->search,
                  'skills' => $this->skills,
-                 'from' => request('from'),
-                 'to' => request('to'),
+                 'from' => $this->from,
+                 'to' => $this->to,
                  'order' => request('order'),
                  'direction' => request('direction')]
 
