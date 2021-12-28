@@ -7,10 +7,16 @@ use App\Sortable;
 use App\User;
 use App\UserFilter;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\Paginator;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 class UsersList extends Component
 {
+    use WithPagination;
+
+    protected $paginationTheme = 'bootstrap';
+
     public $view;
     public $originalUrl;
     public $search;
@@ -38,9 +44,15 @@ class UsersList extends Component
         $this->originalUrl = $request->url();
     }
 
+    public function updating()
+    {
+        $this->resetPage();
+    }
+
     public function changeOrder($order)
     {
         $this->order = $order;
+        $this->resetPage();
     }
 
     protected function getUsers(UserFilter $userFilter)
