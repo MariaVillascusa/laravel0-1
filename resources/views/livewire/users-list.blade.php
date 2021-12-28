@@ -8,11 +8,14 @@
             <table class="table table-sm">
                 <thead class="thead-dark">
                 <tr>
-                    <th scope="col"># <span class="oi oi-caret-bottom"></span><span class="oi oi-caret-top"></span></th>
-                    <th scope="col"><a href="{{ $sortable->url('first_name') }}" class="{{ $sortable->classes('first_name') }}">Nombre </a></th>
-                    <th scope="col"><a href="{{ $sortable->url('email') }}" class="{{ $sortable->classes('email') }}">Correo </a></th>
-                    <th scope="col">Rol <span class="oi oi-caret-bottom"></span><span class="oi oi-caret-top"></span></th>
-                    <th scope="col"><a href="{{ $sortable->url('created_at') }}" class="{{ $sortable->classes('created_at') }}">Fechas </a></th>
+                    <th scope="col">#</th>
+                    @foreach(['first_name' => 'Nombre', 'email' => 'Correo', 'date' => 'Registro', 'login' => 'Último login'] as $column => $title)
+                        <th scope="col">
+                            <a wire:click.prevent="changeOrder('{{ $sortable->order($column) }}')" href="{{ $sortable->url($column) }}" class="{{ $sortable->classes($column) }}">
+                                {{ $title }} <i class="icon-sort"></i>
+                            </a>
+                        </th>
+                    @endforeach
                     <th scope="col" class="text-right th-actions">Acciones</th>
                 </tr>
                 </thead>

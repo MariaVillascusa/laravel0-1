@@ -41,6 +41,15 @@ class SortableTest extends TestCase
     }
 
     /** @test */
+    public function gets_the_right_order()
+    {
+        $this->assertSame('first_name', $this->sortable->order('first_name'));
+        $this->sortable->appends(['order' => 'first_name']);
+        $this->assertSame('first_name-desc', $this->sortable->order('first_name'));
+        $this->assertSame('email', $this->sortable->order('email'));
+    }
+
+    /** @test */
     public function builds_a_url_with_sortable_data()
     {
         $this->assertSame(

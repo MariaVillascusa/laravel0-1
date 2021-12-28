@@ -19,14 +19,16 @@ class UsersList extends Component
     public $skills = [];
     public $from;
     public $to;
+    public $order;
 
     protected $queryString = [
         'search' => ['except' => ''],
         'state' => ['except' => 'all'],
         'role' => ['except' => 'all'],
         'skills' => [],
-        'from' => ['except' => 'all'],
-        'to' => ['except' => 'all'],
+        'from' => ['except' => ''],
+        'to' => ['except' => ''],
+        'order' => ['except' => ''],
     ];
 
     public function mount($view, Request $request)
@@ -34,6 +36,11 @@ class UsersList extends Component
         $this->view = $view;
 
         $this->originalUrl = $request->url();
+    }
+
+    public function changeOrder($order)
+    {
+        $this->order = $order;
     }
 
     protected function getUsers(UserFilter $userFilter)
@@ -50,13 +57,13 @@ class UsersList extends Component
             ->filterBy($userFilter, array_merge(
                 ['trashed' => request()->routeIs('users.trashed')],
                 ['state' => $this->state,
-                 'role' => $this->role,
-                 'search' => $this->search,
-                 'skills' => $this->skills,
-                 'from' => $this->from,
-                 'to' => $this->to,
-                 'order' => request('order'),
-                 'direction' => request('direction')]
+                    'role' => $this->role,
+                    'search' => $this->search,
+                    'skills' => $this->skills,
+                    'from' => $this->from,
+                    'to' => $this->to,
+                    'order' => $this->order,
+                    'direction' => request('direction')]
 
             ))
             ->orderByDesc('created_at')
