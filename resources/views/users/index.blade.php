@@ -12,7 +12,9 @@
             <a href="{{ route('users.index') }}" class="btn btn-outline-dark">Regresar al listado de usuarios</a>
         @endif
     </p>
-
+    @if ($view === 'index')
+        @livewire('user-filter')
+    @endif
     @livewire('users-list', compact(['view']))
 
 @endsection
@@ -32,7 +34,7 @@
                     let usersTable = window.livewire.find(usersTableId);
 
                     if (usersTable.get(field) !== $(this).val()) {
-                        usersTable.set(field, $(this).val());
+                        window.livewire.emit('refreshUserList', field, $(this).val());
                     }
                 });
             });

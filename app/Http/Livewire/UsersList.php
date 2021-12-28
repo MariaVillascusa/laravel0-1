@@ -17,6 +17,10 @@ class UsersList extends Component
 
     protected $paginationTheme = 'bootstrap';
 
+    protected $listeners = [
+        'refreshUserList' => 'refreshList',
+    ];
+
     public $view;
     public $originalUrl;
     public $search;
@@ -68,14 +72,16 @@ class UsersList extends Component
             })
             ->filterBy($userFilter, array_merge(
                 ['trashed' => request()->routeIs('users.trashed')],
-                ['state' => $this->state,
+                [
+                    'state' => $this->state,
                     'role' => $this->role,
                     'search' => $this->search,
                     'skills' => $this->skills,
                     'from' => $this->from,
                     'to' => $this->to,
                     'order' => $this->order,
-                    'direction' => request('direction')]
+                    'direction' => request('direction')
+                ]
 
             ))
             ->orderByDesc('created_at')
@@ -92,12 +98,26 @@ class UsersList extends Component
 
         $this->view = 'index';
 
-        return view('livewire.users-list', [
+        return view('users._livewire-list', [
             'users' => $this->getUsers($userFilter),
             'view' => $this->view,
-            'skillsList' => Skill::getList(),
             'checkedSkills' => collect(request('skills')),
             'sortable' => $sortable,
         ]);
+    }
+
+    public function refreshList($field, $value, $checked = true)
+    {
+        if (in_array($field, ['search', 'state', 'role', 'from', 'to'])) {
+            $this->$field = $value;
+        }
+
+        if ($field === 'skills') {
+            if ($checked) {
+                $this->skills[$value] = $value;
+            } else {
+                unset($this->skills[$value]);
+            }
+        }
     }
 }
